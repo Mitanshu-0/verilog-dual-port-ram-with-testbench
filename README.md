@@ -76,15 +76,13 @@ Each port (Port A and Port B) operates independently with its own address, data,
 
 ## 📂 Repository Structure
 
-tdpram.v              → RTL design (True Dual-Port RAM)
-tb_tdpram.v           → Self-checking testbench
-port_a_stim.txt       → Stimulus file for Port A
-port_b_stim.txt       → Stimulus file for Port B
-TDPRAM_Report.pdf     → Detailed IEEE project report
-README.md             → Project documentation
-LICENSE               → MIT License
-
----
+Dual_Port.v          → RTL design (True Dual-Port RAM)  
+tb_Dual_Port.v       → Self-checking testbench  
+port_a_stim.txt      → Stimulus file for Port A  
+port_b_stim.txt      → Stimulus file for Port B  
+PROJECT_REPORT.pdf   → Detailed IEEE project report  
+README.md            → Project documentation  
+ 
 
 ## 🧾 RTL Code Overview (tdpram.v)
 
