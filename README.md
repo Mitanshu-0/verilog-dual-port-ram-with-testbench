@@ -1,33 +1,28 @@
 # 🧠 True Dual-Port RAM (TDPRAM) in Verilog
 
----
-
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+---
 
 ## 📌 Project Overview
 
 This project implements a **parameterized True Dual-Port RAM (TDPRAM)** using Verilog HDL along with a **self-checking verification environment**.
 
-Unlike single-port memory, TDPRAM allows:
+Unlike conventional single-port RAM, this design allows:
 
-* **Simultaneous read/write operations**
+* **Simultaneous read and write operations**
 * **Two independent access ports**
-* **Higher bandwidth and performance**
+* **Improved memory bandwidth and performance**
 
-This design is widely used in:
-
-* FPGA-based systems
-* Digital Signal Processing (DSP)
-* Communication buffers
-* Multi-core architectures
+Each port (Port A and Port B) operates independently with its own address, data, and control signals, making this design suitable for high-performance digital systems.
 
 ---
 
 ## 🚀 Key Features
 
 * 🔁 Dual independent ports (Port A & Port B)
-* ⚡ Concurrent read/write support
-* 🧩 Parameterized design (scalable memory)
+* ⚡ Concurrent read/write operations
+* 🧩 Parameterized memory (scalable design)
 * ⏱️ Fully synchronous (posedge clock)
 * ⚖️ Deterministic collision handling (Port A priority)
 * 🧪 Self-checking testbench
@@ -36,12 +31,12 @@ This design is widely used in:
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Architecture
 
-### 🔹 Memory Structure
+### 🔹 Memory Design
 
 * Shared memory array: `mem[DEPTH-1:0]`
-* Each location: 8-bit data
+* Each location stores 8-bit data
 * Two independent access paths
 
 ### 🔹 Port Interface
@@ -52,22 +47,20 @@ This design is widely used in:
 | rst             | Synchronous reset |
 | we_a / we_b     | Write enable      |
 | add_a / add_b   | Address inputs    |
-| data_a / data_b | Write data        |
+| data_a / data_b | Input data        |
 | read_a / read_b | Output data       |
 
 ---
 
 ## 🔄 Operation Logic
 
-### ✅ Read/Write Behavior
-
-| Port A | Port B                    | Result         |
-| ------ | ------------------------- | -------------- |
-| Write  | Read                      | Parallel       |
-| Read   | Write                     | Parallel       |
-| Read   | Read                      | No conflict    |
-| Write  | Write (different address) | Both succeed   |
-| Write  | Write (same address)      | ⚠️ Port A wins |
+| Port A | Port B                    | Behavior           |
+| ------ | ------------------------- | ------------------ |
+| Write  | Read                      | Parallel operation |
+| Read   | Write                     | Parallel operation |
+| Read   | Read                      | No conflict        |
+| Write  | Write (different address) | Both succeed       |
+| Write  | Write (same address)      | ⚠️ Port A priority |
 
 ---
 
@@ -83,31 +76,17 @@ This design is widely used in:
 
 ## 📂 Repository Structure
 
-true-dual-port-ram-verilog/
-│
-├── rtl/
-│   └── tdpram.v              # RTL design (main module)
-│
-├── tb/
-│   └── tb_tdpram.v           # Testbench (self-checking)
-│
-├── stimulus/
-│   ├── port_a_stim.txt       # Input vectors for Port A
-│   └── port_b_stim.txt       # Input vectors for Port B
-│
-├── results/
-│   ├── waveform.png          # GTKWave output
-│   └── simulation_log.txt    # Console results
-│
-├── docs/
-│   └── TDPRAM_Report.pdf     # IEEE report
-│
-├── README.md
-└── .gitignore
+tdpram.v              → RTL design (True Dual-Port RAM)
+tb_tdpram.v           → Self-checking testbench
+port_a_stim.txt       → Stimulus file for Port A
+port_b_stim.txt       → Stimulus file for Port B
+TDPRAM_Report.pdf     → Detailed IEEE project report
+README.md             → Project documentation
+LICENSE               → MIT License
 
 ---
 
-## 🧾 RTL Code Structure (tdpram.v)
+## 🧾 RTL Code Overview (tdpram.v)
 
 ### 🔹 Memory Declaration
 
@@ -115,32 +94,23 @@ true-dual-port-ram-verilog/
 reg [7:0] mem [DEPTH-1:0];
 ```
 
-### 🔹 Reset Logic
+### 🔹 Functional Blocks
 
-* Synchronous reset clears all memory locations to `0`
-
-### 🔹 Port A Logic
-
-* Writes data when `we_a = 1`
-* Reads data when `we_a = 0`
-* Has **priority in collision**
-
-### 🔹 Port B Logic
-
-* Handles collision detection
-* Writes only if no conflict or different address
+* **Reset Logic** → Clears all memory locations synchronously
+* **Port A Logic** → Handles read/write with priority
+* **Port B Logic** → Handles read/write with collision detection
 
 ---
 
-## 🧪 Testbench Structure (tb_tdpram.v)
+## 🧪 Testbench Overview (tb_tdpram.v)
 
 ### 🔹 Features
 
-* Self-checking mechanism
+* Self-checking verification
 * Error counter
 * Expected memory model
 
-### 🔹 Tasks Included
+### 🔹 Key Tasks
 
 * `apply_reset`
 * `write_stimulus_files`
@@ -155,17 +125,16 @@ reg [7:0] mem [DEPTH-1:0];
 
 ## 📊 Verification Strategy
 
-### ✔️ Test Scenarios
+### ✔️ Test Cases Covered
 
-* Basic read/write
-* Port A operations
-* Port B operations
-* Cross-port verification
-* Write collision
-* Simultaneous access
-* Reset verification
+* Basic read/write operations
+* Port A and Port B independent operations
+* Cross-port data integrity
+* Write collision handling
+* Simultaneous read/write (different addresses)
+* Reset behavior verification
 
-### ✔️ Method
+### ✔️ Methodology
 
 * File-based stimulus
 * Expected memory comparison
@@ -175,16 +144,16 @@ reg [7:0] mem [DEPTH-1:0];
 
 ## 📈 Simulation Results
 
-All test cases passed successfully:
+All test cases passed successfully.
 
 Errors = 0
 Status = PASS
 
 ✔ Verified:
 
-* Data integrity
+* Dual-port functionality
 * Collision handling
-* Parallel operation
+* Cross-port access
 * Reset behavior
 
 ---
@@ -193,29 +162,23 @@ Status = PASS
 
 ### 🔧 Compile
 
-```
-iverilog -o sim rtl/tdpram.v tb/tb_tdpram.v
-```
+iverilog -o sim tdpram.v tb_tdpram.v
 
-### ▶️ Run
+### ▶️ Run Simulation
 
-```
 vvp sim
-```
 
-### 📉 Waveform
+### 📉 View Waveform (optional)
 
-```
 gtkwave dump.vcd
-```
 
 ---
 
 ## 🔍 Key Design Insights
 
-* Dual-port memory improves throughput
-* Collision handling is critical in shared memory
-* Parameterization increases reusability
+* Dual-port RAM significantly improves throughput
+* Collision handling is essential for shared memory
+* Parameterized design improves scalability
 * Self-checking testbench ensures reliability
 
 ---
@@ -224,27 +187,27 @@ gtkwave dump.vcd
 
 * Single clock domain only
 * No byte-enable support
-* Dual always blocks → possible race condition
-* Read-during-write is tool dependent
+* Dual always blocks may cause race conditions
+* Read-during-write behavior depends on synthesis tool
 
 ---
 
 ## 🔮 Future Improvements
 
-* Dual clock (CDC support)
+* Dual clock (clock domain crossing support)
 * Byte-enable memory
 * Single always block architecture
-* SystemVerilog assertions
+* SystemVerilog assertions for formal verification
 
 ---
 
 ## 🧠 Learning Outcomes
 
-* RTL design using Verilog
+* Verilog RTL design
 * Memory architecture design
-* Functional verification techniques
+* Functional verification
 * Testbench automation
-* Handling hardware corner cases
+* Handling edge cases in digital systems
 
 ---
 
@@ -271,13 +234,15 @@ This project was completed as part of the **Testing and Verification of Digital 
 ---
 
 ## 📌 License
+
 This project is licensed under the MIT License.
 
 You are free to:
-- Use
-- Modify
-- Distribute
-- Use commercially
+
+* Use
+* Modify
+* Distribute
+* Use commercially
 
 Provided that proper credit is given to the original author.
 
